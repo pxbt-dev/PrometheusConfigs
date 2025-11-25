@@ -1,5 +1,8 @@
 FROM prom/prometheus:v2.47.0
 
+# Disable the problematic query log that causes permission issues
+CMD ["--config.file=/etc/prometheus/prometheus.yml", "--query-log-file="]
+
 # Fix permission issues
 USER nobody
 
