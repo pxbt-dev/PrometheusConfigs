@@ -1,14 +1,10 @@
 FROM prom/prometheus:v2.47.0
 
-# Disable the problematic query log that causes permission issues
-CMD ["--config.file=/etc/prometheus/prometheus.yml", "--query-log-file="]
+# Create a writable directory for Prometheus
+RUN mkdir -p /prometheus_data && chown -R 65534:65534 /prometheus_data
 
-# Fix permission issues
-USER nobody
-
-# Add cache busting
-ARG CACHE_BUST=1
-RUN echo "Cache bust: $CACHE_BUST"
+# Use the custom data directory
+CMD ["--config.file=/etc/prometheus/prometheus.yml", "--storage.tsdb.path=/prometheus_data"]
 
 COPY prometheus.yml /etc/prometheus/prometheus.yml
 COPY global/alert-rules.yml /etc/prometheus/
