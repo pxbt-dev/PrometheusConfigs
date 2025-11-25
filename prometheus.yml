@@ -5,13 +5,26 @@ global:
 rule_files:
   - "alert-rules.yml"
 
-alerting:
-  alertmanagers:
-    - static_configs:
-        - targets:
-            - alertmanager:9093
-
 scrape_configs:
+  - job_name: 'aicryptopredictor'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['aicryptopredictor.com']
+    scheme: 'https'
+    scrape_interval: 15s
+
+  - job_name: 'trading-calculator'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['tradingpositionsizecalculator.com']
+    scheme: 'https'
+
+  - job_name: 'trading-calculator-web3'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['web3.tradingpositionsizecalculator.com']
+    scheme: 'https'
+
   - job_name: 'prometheus'
     static_configs:
       - targets: ['localhost:9090']
