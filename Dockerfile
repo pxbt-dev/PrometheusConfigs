@@ -1,5 +1,8 @@
 FROM prom/prometheus:v2.47.0
 
+# Fix permission issues
+USER nobody
+
 # Add cache busting
 ARG CACHE_BUST=1
 RUN echo "Cache bust: $CACHE_BUST"
